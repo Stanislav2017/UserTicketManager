@@ -51,7 +51,7 @@
 						</div>
 						<div class="form-group">
 							<label for="sector" class="control-label">sex</label>
-							<form:input type="text" path="sex" id="sex" class="form-control" placeholder="Sex"/>
+							<form:select path="sex" id="sex" items="${sexs}" itemLabel="name" itemValue="id"  class="form-control"></form:select>
 						</div>
 					</form>
 				</div>

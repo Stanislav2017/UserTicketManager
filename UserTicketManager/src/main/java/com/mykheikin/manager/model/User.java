@@ -7,11 +7,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -38,8 +39,8 @@ public class User implements Serializable {
 	@Column(name = "patronymic")
 	private String patronymic;
 
-	@Column(name = "sex")
-	private String sex;
+	@OneToOne
+	private Sex sex;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Ticket> tickets = new ArrayList<>();
@@ -47,8 +48,8 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(int id, String username, String password, String firstName, String lastName, String patronymic,
-			String sex, List<Ticket> tickets) {
+	public User(int id, String username, String password, String firstName, String lastName, String patronymic, Sex sex,
+			List<Ticket> tickets) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -107,11 +108,11 @@ public class User implements Serializable {
 		this.patronymic = patronymic;
 	}
 
-	public String getSex() {
+	public Sex getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	public void setSex(Sex sex) {
 		this.sex = sex;
 	}
 

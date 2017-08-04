@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page isELIgnored="false"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="sex" value="${user.sex}" />
 <html>
 
 <head>
@@ -31,7 +32,7 @@
 							</tr>
 							<tr>
 								<td class="active">Sex</td>
-								<td>${user.sex}</td>
+								<td>${sex.name}</td>
 							</tr>
 						</table>
 						<div class="btn-group btn-group-justified">

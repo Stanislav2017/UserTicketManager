@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mykheikin.manager.model.Sex;
 import com.mykheikin.manager.model.Ticket;
 
 @Repository("ticketDao")
@@ -53,8 +54,11 @@ public class TicketDaoImpl extends AbstractDao<Integer, Ticket> implements Ticke
 
 		List<Ticket> ticketList = (List<Ticket>) criteria.list();
 
+		for (Ticket ticket : ticketList) {
+			logger.info("Ticket successfully load. Ticket details: " + ticket);
+		}
+
 		return ticketList;
 
 	}
-
 }

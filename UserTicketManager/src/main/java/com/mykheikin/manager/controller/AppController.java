@@ -1,18 +1,21 @@
 package com.mykheikin.manager.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mykheikin.manager.model.Sex;
 import com.mykheikin.manager.model.Ticket;
 import com.mykheikin.manager.model.User;
+import com.mykheikin.manager.service.SexEditor;
+import com.mykheikin.manager.service.SexService;
 import com.mykheikin.manager.service.TicketService;
 import com.mykheikin.manager.service.UserService;
 
@@ -25,6 +28,16 @@ public class AppController {
 
 	@Autowired
 	private TicketService ticketService;
+	
+	@Autowired
+	private SexService sexService;	
+	
+	// Registering CategoryEditor class.
+    // If you need any other editor class declaration, you can register inside this method.
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Sex.class, new SexEditor(sexService));
+    }
 
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String Userlist( ModelMap model) {
@@ -39,6 +52,7 @@ public class AppController {
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.GET)
 	public String newUser(ModelMap model) {
 
+		model.addAttribute("sexs", sexService.findAllSex());
 		model.addAttribute("user", new User());
 		model.addAttribute("edit", false);
 
@@ -67,17 +81,6 @@ public class AppController {
 	@RequestMapping(value = { "/ticket/{id}" }, method = RequestMethod.POST)
 	public String saveTicket(@PathVariable int id, @ModelAttribute("ticket") Ticket ticket) {
 		
-		/*User user = userService.findById(id);
-		List<Ticket> tickets = new ArrayList<>();
-		tickets.add(ticket);
-		user.setTickets(tickets);
-		
-		Ticket entity = ticket;
-		
-		entity.setUser(user);
-		
-		userService.update(user);*/
-		
 		User user = userService.findById(id);
 		Ticket entity = ticket;
 		entity.setUser(user);
@@ -100,6 +103,7 @@ public class AppController {
 	@RequestMapping(value = { "/edit-user/{id}" }, method = RequestMethod.GET)
 	public String editUser(@PathVariable int id, ModelMap model) {
 
+		model.addAttribute("sexs", sexService.findAllSex());
 		model.addAttribute("user", userService.findById(id));
 		model.addAttribute("edit", true);
 

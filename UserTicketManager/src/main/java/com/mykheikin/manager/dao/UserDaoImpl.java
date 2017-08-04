@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mykheikin.manager.model.Sex;
 import com.mykheikin.manager.model.User;
 
 @Repository("userDao")
@@ -52,6 +53,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		List<User> userList = (List<User>) criteria.list();
+
+		for (User user : userList) {
+			logger.info("User successfully load. User details: " + user);
+		}
 
 		return userList;
 
