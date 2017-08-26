@@ -18,7 +18,7 @@ public class Ticket implements Serializable {
 	@Id
 	@Column(name = "ticket_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	@Column(name = "date")
 	private String date;
@@ -37,11 +37,11 @@ public class Ticket implements Serializable {
 		this.user = user;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

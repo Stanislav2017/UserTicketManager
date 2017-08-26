@@ -2,6 +2,7 @@ package com.mykheikin.jpaproject.service;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,23 @@ public class UserServiceImpl implements UserService {
 	private RoleGenerator roleGenerator;
 
 	@Override
-	public User findById(int id) {
-		return userRepository.findOne((long) id);
+	public User findById(Long id) {
+		User user = userRepository.findOne(id);
+		if(user!=null){
+			Hibernate.initialize(user.getRoles());
+			Hibernate.initialize(user.getTickets());
+		}
+		return user;
 	}
 
 	@Override
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+		User user = userRepository.findByUsername(username);
+		if(user!=null){
+			Hibernate.initialize(user.getRoles());
+			Hibernate.initialize(user.getTickets());
+		}
+		return user;
 	}
 
 	@Override
@@ -43,12 +54,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void update(User user) {
-		userRepository.save(user);	
+		save(user);
 	}
 
 	@Override
-	public void delete(int id) {
-		userRepository.delete((long)id);
+	public void delete(Long id) {
+		userRepository.delete(id);
 	}
 
 	@Override
@@ -57,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean isUsernameUnique(Integer id, String username) {
+	public boolean isUsernameUnique(Long id, String username) {
 		User user = findByUsername(username);
 		return ( user == null || ((id != null) && (user.getId() == id)));
 	}	

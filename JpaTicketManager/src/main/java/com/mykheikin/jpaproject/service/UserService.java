@@ -6,7 +6,7 @@ import com.mykheikin.jpaproject.model.User;
 
 public interface UserService {
 
-	User findById(int id);
+	User findById(Long id);
 	
 	User findByUsername(String username);
 	
@@ -14,9 +14,9 @@ public interface UserService {
 	
 	void update(User user);
 	
-	void delete(int id);
+	void delete(Long id);
 	
 	List<User> findAllUsers();
 	
-	boolean isUsernameUnique(Integer id, String username);
+	boolean isUsernameUnique(Long id, String username);
 }
