@@ -78,7 +78,7 @@
 								<td>${user.username}</td>
 							</tr>
 						</table>
-						<a href="<c:url value='/edit-user/${user.id}'/>" class="btn btn-default btn-block" title="change this user">
+						<a href="<c:url value='/edit-user/${user.username}'/>" class="btn btn-default btn-block" title="change this user">
 							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 						</a>
 					</div>

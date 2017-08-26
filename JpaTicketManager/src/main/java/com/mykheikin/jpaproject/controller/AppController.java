@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mykheikin.jpaproject.model.Ticket;
 import com.mykheikin.jpaproject.model.User;
-import com.mykheikin.jpaproject.repositories.TicketRepository;
+import com.mykheikin.jpaproject.service.TicketService;
 import com.mykheikin.jpaproject.service.UserService;
 
 @Controller
@@ -34,7 +34,7 @@ public class AppController {
 	private UserService userService;
 
 	@Autowired
-	private TicketRepository ticketRepository;
+	private TicketService ticketService;
 
 	@Autowired
 	MessageSource messageSource;
@@ -103,9 +103,49 @@ public class AppController {
 		Ticket entity = ticket;
 		entity.setUser(user);
 
-		ticketRepository.save(entity);
+		ticketService.save(entity);
 
 		return "redirect:/welcome";
+	}
+	
+	// ===================================================================
+	
+	@RequestMapping(value = { "/edit-user/{username}" }, method = RequestMethod.GET)
+	public String editUser(@PathVariable String username, ModelMap model) {
+		User user = userService.findByUsername(username);
+		model.addAttribute("user", user);
+		model.addAttribute("message", "Change user!!!");
+		return "registration";
+	}
+	
+	@RequestMapping(value = { "/edit-user/{username}" }, method = RequestMethod.POST)
+	public String updateUser(@Valid User user, BindingResult result,
+			ModelMap model, @PathVariable String username) {
+
+		if (result.hasErrors()) {
+			return "registration";
+		}
+
+		userService.update(user);
+
+		return "welcome";
+	}
+	
+	@RequestMapping(value = { "/edit-ticket/{id}" }, method = RequestMethod.GET)
+	public String editTicket(@PathVariable Long id, ModelMap model) {
+
+		model.addAttribute("ticket", ticketService.findById(id));
+		model.addAttribute("message", "Change ticket");
+
+		return "ticketform";
+	}
+
+	@RequestMapping(value = { "/edit-ticket/{id}" }, method = RequestMethod.POST)
+	public String updateTicket(@ModelAttribute("ticket") Ticket ticket) {
+
+		ticketService.update(ticket);
+
+		return "redirect:/list";
 	}
 
 	// ===================================================================
@@ -127,7 +167,7 @@ public class AppController {
 	
 	@RequestMapping(value = { "/delete-ticket/{id}" }, method = RequestMethod.GET)
 	public String deleteTicket(@PathVariable Long id) {
-		ticketRepository.delete(id);
+		ticketService.delete(id);
 		return "redirect:/welcome";
 	}
 
